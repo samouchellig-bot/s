@@ -4,7 +4,7 @@ import time
 # إعدادات الصفحة والمظهر
 st.set_page_config(page_title="مساعد الإنجاز اليومي", page_icon="✔", layout="centered")
 
-# تعديل التصميم لضمان الاتجاه العربي بالكامل ومظهر مريح
+# تعديل التصميم لضمان الاتجاه العربي بالكامل ومظهر مريح ومحفز
 st.markdown("""
     <style>
     .reportview-container .main .block-container{ max-width: 600px; }
@@ -15,14 +15,20 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("مساعد الإنجاز الذكي مع المؤقت")
-st.write("نظم يومك، حدد وقتاً لمهامك، وأنجزها بدون تسويف.")
+st.title("مساعد الإنجاز الذكي الحماسي")
+st.write("نظم يومك، أشعل حماسك بالموسيقى، وأنجز مهامك قبل انتهاء المنبه!")
 
 # استخدام الجلسة (Session State) لحفظ البيانات بنقاء
 if "tasks" not in st.session_state:
     st.session_state.tasks = []
 if "done_count" not in st.session_state:
     st.session_state.done_count = 0
+
+# --- روابط الصوت والموسيقى المجانية أونلاين ---
+# موسيقى حماسية للخلفية (تشتغل أثناء الموقت)
+BGM_URL = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+# صوت جرس منبه قوي (يشتغل عند انتهاء الوقت)
+ALARM_URL = "https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg"
 
 # --- قسم إضافة مهمة جديدة مع وقتها ---
 st.subheader("[+] أضف مهمة جديدة ووقتها")
@@ -44,7 +50,6 @@ if not st.session_state.tasks:
     st.success("تم إنجاز كل المهام الحالية بنجاح! أنت شخص رائع.")
 else:
     for index, task in enumerate(st.session_state.tasks):
-        # للتأكد من عدم حدوث تداخل مع بقايا البيانات القديمة في المتصفح
         if isinstance(task, dict) and "name" in task and "minutes" in task:
             with st.container():
                 col_txt, col_tmr, col_btn = st.columns([2, 1, 1])
@@ -54,11 +59,17 @@ else:
                 
                 with col_tmr:
                     if st.button(f"⏱ بدء {task['minutes']}د", key=f"tmr_{index}"):
+                        # 1. تشغيل الموسيقى الحماسية في الخلفية تلقائياً فور بدء العداد
+                        st.markdown(f'<audio src="{BGM_URL}" autoplay loop hidden></audio>', unsafe_allow_html=True)
+                        
                         with st.empty():
                             for t in range(int(task['minutes']), -1, -1):
-                                st.markdown(f"<div class='timer-box'>⏳ متبقي: {t} دقيقة</div>", unsafe_allow_html=True)
+                                st.markdown(f"<div class='timer-box'>⏳ متبقي: {t} دقيقة (الموسيقى تعمل...)</div>", unsafe_allow_html=True)
                                 time.sleep(1) 
-                            st.markdown("<div class='timer-box'>🔔 انتهى الوقت! أنجزها الآن!</div>", unsafe_allow_html=True)
+                            
+                            # 2. عند انتهاء الوقت: إيقاف الموسيقى وإصدار صوت منبه قوي وتلقائي
+                            st.markdown(f'<audio src="{ALARM_URL}" autoplay></audio>', unsafe_allow_html=True)
+                            st.markdown("<div class='timer-box' style='background-color: #f8d7da; border-right: 5px solid #dc3545;'>🔔 انتهى الوقت! أصدرنا تنبيهاً صوتاً، أنجزها الآن!</div>", unsafe_allow_html=True)
                 
                 with col_btn:
                     if st.button("تم ✔", key=f"btn_{index}"):
@@ -66,7 +77,6 @@ else:
                         st.session_state.tasks.pop(index)
                         st.rerun()
         else:
-            # إذا عثر على مهمة قديمة تالفة، يقوم بمسحها لتنظيف الذاكرة تلقائياً
             st.session_state.tasks.pop(index)
             st.rerun()
 
