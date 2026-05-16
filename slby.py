@@ -50,16 +50,14 @@ else:
             col_txt, col_tmr, col_btn = st.columns([2, 1, 1])
             
             with col_txt:
-                st.info(f"🎯 {task['name']} ({task['minutes']} دقيقة)")
+                # هنا تم الإصلاح: إضافة نص منسق بشكل صحيح ومستقر
+                st.info(f"{task['name']} | {task['minutes']} دقيقة")
             
             with col_tmr:
                 # زر لتشغيل مؤقت خاص بهذه المهمة
-                if st.button(f"⏱️ بدء {task['minutes']}د", key=f"tmr_{index}"):
-                    # محاكاة عد تنازلي سريع للتجربة (أو حقيقي)
+                if st.button(f"⏱ بدء {task['minutes']}د", key=f"tmr_{index}"):
                     with st.empty():
-                        seconds = task['minutes'] * 60
-                        # للتجربة السريعة أونلاين، جعلنا كل دقيقة تمر في ثانية واحدة حتى لا ينتظر المستخدم طويلاً
-                        for t in range(task['minutes'], -1, -1):
+                        for t in range(int(task['minutes']), -1, -1):
                             st.markdown(f"<div class='timer-box'>⏳ متبقي: {t} دقيقة</div>", unsafe_allow_html=True)
                             time.sleep(1) 
                         st.markdown("<div class='timer-box'>🔔 انتهى الوقت! أنجزها الآن!</div>", unsafe_allow_html=True)
