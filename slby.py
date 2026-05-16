@@ -15,8 +15,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("مساعد الإنجاز الذكي الحماسي")
-st.write("نظم يومك، أشعل حماسك بالموسيقى، وأنجز مهامك قبل انتهاء المنبه!")
+st.title("مساعد الإنجاز الذكي مع منبه حماسي")
+st.write("نظم يومك، ركز في هدوء، وعند انتهاء الوقت استمع للأغنية الحماسية لتنجز فوراً!")
 
 # استخدام الجلسة (Session State) لحفظ البيانات بنقاء
 if "tasks" not in st.session_state:
@@ -24,11 +24,9 @@ if "tasks" not in st.session_state:
 if "done_count" not in st.session_state:
     st.session_state.done_count = 0
 
-# --- روابط الصوت والموسيقى المجانية أونلاين ---
-# موسيقى حماسية للخلفية (تشتغل أثناء الموقت)
-BGM_URL = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-# صوت جرس منبه قوي (يشتغل عند انتهاء الوقت)
-ALARM_URL = "https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg"
+# --- رابط الأغنية والموسيقى الحماسية أونلاين ---
+# ستنطلق هذه الأغنية بقوة وفوراً عند انتهاء الوقت المحدد تماماً
+AUDIO_URL = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
 
 # --- قسم إضافة مهمة جديدة مع وقتها ---
 st.subheader("[+] أضف مهمة جديدة ووقتها")
@@ -59,17 +57,16 @@ else:
                 
                 with col_tmr:
                     if st.button(f"⏱ بدء {task['minutes']}د", key=f"tmr_{index}"):
-                        # 1. تشغيل الموسيقى الحماسية في الخلفية تلقائياً فور بدء العداد
-                        st.markdown(f'<audio src="{BGM_URL}" autoplay loop hidden></audio>', unsafe_allow_html=True)
                         
                         with st.empty():
+                            # العداد التنازلي يعمل الآن في صمت تام للتركيز الكامل
                             for t in range(int(task['minutes']), -1, -1):
-                                st.markdown(f"<div class='timer-box'>⏳ متبقي: {t} دقيقة (الموسيقى تعمل...)</div>", unsafe_allow_html=True)
+                                st.markdown(f"<div class='timer-box'>⏳ متبقي: {t} دقيقة (تركيز وهدوء...)</div>", unsafe_allow_html=True)
                                 time.sleep(1) 
                             
-                            # 2. عند انتهاء الوقت: إيقاف الموسيقى وإصدار صوت منبه قوي وتلقائي
-                            st.markdown(f'<audio src="{ALARM_URL}" autoplay></audio>', unsafe_allow_html=True)
-                            st.markdown("<div class='timer-box' style='background-color: #f8d7da; border-right: 5px solid #dc3545;'>🔔 انتهى الوقت! أصدرنا تنبيهاً صوتاً، أنجزها الآن!</div>", unsafe_allow_html=True)
+                            # التعديل الجديد المطلوب: تشغيل الأغنية الحماسية تلقائياً وبقوة فقط بعد انتهاء الوقت المحدد (وصول العداد لـ 0)
+                            st.markdown(f'<audio src="{AUDIO_URL}" autoplay loop></audio>', unsafe_allow_html=True)
+                            st.markdown("<div class='timer-box' style='background-color: #f8d7da; border-right: 5px solid #dc3545;'>🔔 انتهى الوقت المحدد! الأغنية الحماسية تعمل الآن، أنجز المهمة سريعاً!</div>", unsafe_allow_html=True)
                 
                 with col_btn:
                     if st.button("تم ✔", key=f"btn_{index}"):
