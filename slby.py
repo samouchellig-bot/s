@@ -24,8 +24,7 @@ if "tasks" not in st.session_state:
 if "done_count" not in st.session_state:
     st.session_state.done_count = 0
 
-# --- رابط الأغنية والموسيقى الحماسية أونلاين ---
-# ستنطلق هذه الأغنية بقوة وفوراً عند انتهاء الوقت المحدد تماماً
+# --- رابط الأغنية والموسيقى الحماسية أونلاين (تم تحديثه برابط مباشر ومستقر جداً) ---
 AUDIO_URL = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
 
 # --- قسم إضافة مهمة جديدة مع وقتها ---
@@ -59,14 +58,14 @@ else:
                     if st.button(f"⏱ بدء {task['minutes']}د", key=f"tmr_{index}"):
                         
                         with st.empty():
-                            # العداد التنازلي يعمل الآن في صمت تام للتركيز الكامل
+                            # العداد التنازلي صامت للتركيز
                             for t in range(int(task['minutes']), -1, -1):
                                 st.markdown(f"<div class='timer-box'>⏳ متبقي: {t} دقيقة (تركيز وهدوء...)</div>", unsafe_allow_html=True)
                                 time.sleep(1) 
                             
-                            # التعديل الجديد المطلوب: تشغيل الأغنية الحماسية تلقائياً وبقوة فقط بعد انتهاء الوقت المحدد (وصول العداد لـ 0)
-                            st.markdown(f'<audio src="{AUDIO_URL}" autoplay loop></audio>', unsafe_allow_html=True)
-                            st.markdown("<div class='timer-box' style='background-color: #f8d7da; border-right: 5px solid #dc3545;'>🔔 انتهى الوقت المحدد! الأغنية الحماسية تعمل الآن، أنجز المهمة سريعاً!</div>", unsafe_allow_html=True)
+                            # الحل النهائي للمتصفح: عرض مشغل صوت مرئي حقيقي ليصدر الصوت فوراً
+                            st.markdown("<div class='timer-box' style='background-color: #f8d7da; border-right: 5px solid #dc3545;'>🔔 انتهى الوقت المحدد! اضغط تشغيل في الأسفل لسماع الأغنية الحماسية وإنجاز المهمة!</div>", unsafe_allow_html=True)
+                            st.audio(AUDIO_URL, format="audio/mp3", autoplay=True)
                 
                 with col_btn:
                     if st.button("تم ✔", key=f"btn_{index}"):
