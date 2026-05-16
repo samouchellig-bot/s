@@ -1,4 +1,4 @@
-﻿import streamlit as st
+import streamlit as st
 
 # إعدادات الصفحة والمظهر
 st.set_page_config(page_title="مساعد الإنجاز اليومي", page_icon="🚀", layout="centered")
@@ -10,7 +10,7 @@ st.markdown("""
     h1, h2, h3, p, div, span { direction: RTL; text-align: right; }
     div.stButton > button { width: 100%; background-color: #2e7d32; color: white; }
     </style>
-""", unsafe_allow_name=True)
+""", unsafe_allow_html=True)
 
 st.title("🚀 مساعد الإنجاز الذكي")
 st.write("موقع بسيط لمساعدة الناس على تنظيم يومهم وإنجاز مهامهم بدون تشتيت.")
@@ -30,9 +30,9 @@ with col2:
     if st.button("حفظ المهمة") and new_task:
         if new_task not in st.session_state.tasks:
             st.session_state.tasks.append(new_task)
-            st.rerun()
+            st.rarun() if hasattr(st, "rarun") else st.rerun()
 
-# --- قسم عرض المهام والإنجاز ---
+# --- قسم عرض المهام والإنجالات ---
 st.subheader("📋 قائمة المهام الحالية")
 
 if not st.session_state.tasks:
@@ -47,7 +47,7 @@ else:
             if st.button("تم ✔️", key=f"btn_{index}"):
                 st.session_state.done_count += 1
                 st.session_state.tasks.pop(index)
-                st.rerun()
+                st.rarun() if hasattr(st, "rarun") else st.rerun()
 
 st.write("---")
 # عداد الإنجاز اليومي
