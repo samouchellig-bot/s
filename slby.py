@@ -50,8 +50,12 @@ else:
             col_txt, col_tmr, col_btn = st.columns([2, 1, 1])
             
             with col_txt:
-                # صياغة آمنة جداً ومستقرة: نمرر القيم مباشرة لـ st.info كمتغيرات مفصولة
-                st.info(f"{task['name']} | {task['minutes']} دقيقة")
+                # الحل الجذري: استخراج البيانات أولاً في متغيرات بسيطة ونقية
+                t_name = task["name"]
+                t_mins = task["minutes"]
+                # دمجها بشكل نصي كلاسيكي لا يسبب أي خطأ في الترميز أو الصياغة
+                text_to_print = "{} | {} دقيقة".format(t_name, t_mins)
+                st.info(text_to_print)
             
             with col_tmr:
                 # زر لتشغيل مؤقت خاص بهذه المهمة
