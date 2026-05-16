@@ -35,7 +35,7 @@ with col_time:
 
 if st.button("حفظ المهمة في الجدول") and new_task:
     # حفظ المهمة كقاموس يحتوي الاسم والوقت
-    st.session_state.tasks.append({"name": new_task, "minutes": task_minutes})
+    st.session_state.tasks.append({"name": new_task, "minutes": int(task_minutes)})
     st.rerun()
 
 # --- قسم عرض المهام والمؤقت ---
@@ -50,8 +50,9 @@ else:
             col_txt, col_tmr, col_btn = st.columns([2, 1, 1])
             
             with col_txt:
-                # هنا تم الإصلاح: إضافة نص منسق بشكل صحيح ومستقر
-                st.info(f"{task['name']} | {task['minutes']} دقيقة")
+                # صياغة مبسطة جداً ومضمونة لمنع أي خطأ syntax
+                task_info_text = str(task['name']) + " | " + str(task['minutes']) + " دقيقة"
+                st.info(task_info_text)
             
             with col_tmr:
                 # زر لتشغيل مؤقت خاص بهذه المهمة
@@ -69,5 +70,5 @@ else:
                     st.rerun()
 
 st.write("---")
-# عداد الإنجاز اليومي
+# - عداد الإنجاز اليومي -
 st.metric(label="إجمالي المهام المنجزة اليوم", value=st.session_state.done_count)
