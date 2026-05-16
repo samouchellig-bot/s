@@ -50,9 +50,8 @@ else:
             col_txt, col_tmr, col_btn = st.columns([2, 1, 1])
             
             with col_txt:
-                # صياغة مبسطة جداً ومضمونة لمنع أي خطأ syntax
-                task_info_text = str(task['name']) + " | " + str(task['minutes']) + " دقيقة"
-                st.info(task_info_text)
+                # صياغة آمنة جداً ومستقرة: نمرر القيم مباشرة لـ st.info كمتغيرات مفصولة
+                st.info(f"{task['name']} | {task['minutes']} دقيقة")
             
             with col_tmr:
                 # زر لتشغيل مؤقت خاص بهذه المهمة
@@ -70,5 +69,5 @@ else:
                     st.rerun()
 
 st.write("---")
-# - عداد الإنجاز اليومي -
+# عداد الإنجاز اليومي
 st.metric(label="إجمالي المهام المنجزة اليوم", value=st.session_state.done_count)
